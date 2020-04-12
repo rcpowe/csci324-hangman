@@ -1,0 +1,10 @@
+Also for you’re PL project... you should do something website oriented with Ruby on Rails
+That’s a project where you can really build something your proud of. I’m trying to think what would be most your speed. A website around:
+- environmental policies in this election cycle
+- van life route given constraints (costs, time) (pull in reviews of the American west)
+You want to build a project that your excited about
+And because you’ll be collaborating, you definitely want to use GitHub!
+
+website around
+-textbook buy/sell
+-
