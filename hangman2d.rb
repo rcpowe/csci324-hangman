@@ -1,6 +1,13 @@
-#v0.5 prints special chars not in the alphabet. Secret word is printed for testing
-# 	and set to be king’s
-#4/10/20 2:44 pm - Ryan
+
+require 'ruby2d'
+set background: 'white'
+#v0.4.5 needs window to close
+#24/10/20 4:50 pm - Sam
+
+require 'ruby2d'
+set background: 'white'
+#v0.4 more user friendly, check imstuck.docs in shared folder
+#2/24/20 1:43 pm - Ryan
 
 def genOutput (word)
   i = 0
@@ -37,7 +44,7 @@ end
 
 def pick_random_line
   random_line = nil
-  File.open("testdict.txt") do |file|
+  File.open("dictionary.txt") do |file|
     file_lines = file.readlines()
     random_line = file_lines[Random.rand(0...file_lines.size())]
     #puts "#{random_line}"
@@ -50,63 +57,113 @@ def display_hangman (lives)
   puts "Lives Remaining: #{lives}"
   case lives
   when 6
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "            | "
-    puts "            | "
-    puts "            | "
-    puts "            | "
-    puts "    ========= "
+      #tob horizonatal bar
+      Line.new(
+      x1:310, y1: 10,
+      x2:575, y2: 10,
+      color: 'black',
+      width: 20,
+      z:10
+      )
+
+      #right vertical bar
+      Line.new(
+      x1:560, y1: 10,
+      x2:560, y2: 420,
+      color: 'black',
+      width: 30,
+      z:10
+      )
+
+      # bottom bar
+      Line.new(
+      x1:620, y1: 420,
+      x2:500, y2: 420,
+      color: 'black',
+      width: 30,
+      z:10
+      )
+
+      #rope
+      Line.new(
+      x1:320, y1: 10,
+      x2:320, y2: 180,
+      color: 'black',
+      width: 5,
+      z:10
+      )
+
 
   when 5
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "        O   | "
-    puts "            | "
-    puts "            | "
-    puts "            | "
-    puts "    ========= "
+    update do
+      #head
+      Circle.new(
+        x: 320, y: 150,
+        radius: 30,
+        sectors: 32,
+        color: 'black',
+        z: 1
+      )
+
+    end
   when 4
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "        O   | "
-    puts "        |   | "
-    puts "            | "
-    puts "            | "
-    puts "    ========= "
+    update do
+      #body
+      Line.new(
+      x1:320, y1: 150,
+      x2:320, y2: 240,
+      color: 'black',
+      width: 20,
+      z:10
+      )
+    end
   when 3
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "        O   | "
-    puts "       /|   | "
-    puts "            | "
-    puts "            | "
-    puts "    ========= "
+    update do
+      #arm1
+      Line.new(
+      x1:320, y1: 150,
+      x2:290, y2: 240,
+      color: 'black',
+      width: 12.5,
+      z:10
+      )
+    end
+
   when 2
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "        O   | "
-    puts "       /|\\  | "
-    puts "            | "
-    puts "            | "
-    puts "    ========= "
+    update do
+      #arm2
+      Line.new(
+      x1:320, y1: 150,
+      x2:350, y2: 240,
+      color: 'black',
+      width: 12.5,
+      z:10
+      )
+    end
   when 1
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "        O   | "
-    puts "       /|\\  | "
-    puts "       /    | "
-    puts "            | "
-    puts "    ========= "
+    update do
+      #leg1
+      Line.new(
+      x1:320, y1: 240,
+      x2:290, y2: 330,
+      color: 'black',
+      width: 12.5,
+      z:10
+      )
+    end
   else
-    puts "        \+---\+ "
-    puts "        |   | "
-    puts "        O   | "
-    puts "       /|\\  | "
-    puts "       / \\  | "
-    puts "            | "
-    puts "    ========= "
+    update do
+    #leg2
+    Line.new(
+    x1:320, y1: 240,
+    x2:350, y2: 330,
+    color: 'black',
+    width: 12.5,
+    z:10
+    )
+    end
   end #end switch case
+  show
   return
 end #end display_hangman()
 
@@ -122,7 +179,6 @@ def display_commands
   puts "rules"
   puts "commands"
   puts "play"
-  puts "add a word"
   puts "quit"
   return
 end #end display_commands
@@ -144,10 +200,9 @@ end #end display_letters_left
 def play
   puts "Generating secret word..."
   secret_word = pick_random_line().downcase.strip
-  #secret_word = "king's"
   secret_word_array = secret_word.chars.to_a
   puts "Word generated!\n"
-  puts "The secret word to guess is: #{secret_word}"
+  puts "The secret_word to guess is: #{secret_word}"
   #puts "the random line is #{word}"
   #regex or something to ignore spaces
   #secret_word = "samcancoderuby"
@@ -156,25 +211,23 @@ def play
   #user_input = "zzz"
   #initalizes user_input to be a word not in the dictionary.txt
   alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
-  "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+  "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\'"]
   lives = 6
   out_of_lives = false
   letters_remaining = secret_word.length
   display_hangman(lives)
-
-  secret_word_array.each do |x|
-    if alphabet.include?(x.downcase) == true
-      print "_ "
-    else
-      print "#{x.downcase} "
-      letters_remaining -= 1
-    end
-  end
-  puts"\n"
   puts "Letters Remaining: #{letters_remaining}"
+  secret_word_array.each do |x|
+    print "_ "
+  end
+  puts"\n\n"
+
   while !out_of_lives
     #user_input != secret_word and !out_of_guesses
     if lives > 0
+      update do
+        close
+      end
       display_letters_left(alphabet)
       puts "Guess a letter: "
       user_input = gets.chomp.downcase.strip
@@ -194,7 +247,7 @@ def play
       #outputBlank = genOutput(secret_word)
       #puts "#{secret_word}"
       #outputCurrent = comparify(user_input, secret_word)
-      #puts "The secret word contains: #{user_input}";
+      puts "The secret word contains: #{user_input}";
       #puts "#{outputBlank}"
       #puts "#{outputCurrent}"
       #user_input.gsub!(/s/, "th")
@@ -214,7 +267,7 @@ def play
 
       if correct_guesses == secret_word.length
         puts "CONGRATULATIONS"
-        puts "The word is #{secret_word.upcase}"
+        puts "The word is #{secret_word}"
         puts "You Win!"
         return
       end #end if
@@ -235,14 +288,7 @@ def play
   end #end while
 
 end #end play()
-def add_a_word
-  puts "What word would you like to add to the dictionary?"
-  word_to_add = gets.chomp.downcase.strip
-  open('testdict.txt', 'a') { |f|
-  f.puts word_to_add
-}
-  puts "The word has been added!"
-end
+
 #STARTMAIN----------------------------------------------------------------------
 display_welcome()
 display_commands()
@@ -257,8 +303,6 @@ while command != "quit"
     play()
   when "commands"
     display_commands()
-  when "add a word"
-    add_a_word()
   when "quit"
     puts "Have a great day!"
     return

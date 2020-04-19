@@ -47156,8 +47156,3 @@ zoomed
 zooming
 zooms
 zoos
-Hello, world.
-asasasasasasas
-dont do it to me
-blahblahblah
-b52
